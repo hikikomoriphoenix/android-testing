@@ -6,7 +6,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.either;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
@@ -31,8 +30,8 @@ public class PlainUnitTests {
 
     @Test
     public void isEqualString() {
-        assertThat("red", is(equalTo("red")));
-        assertThat("blue", is(equalTo("blue")));
+        assertThat("red", is("red"));//ommitted equalTo
+        assertThat("blue", is("blue"));
     }
 
     @Test

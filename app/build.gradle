@@ -21,10 +21,15 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+
+    /*make sure to use testImplementation  for libraries used for unit tests and
+    androidTestImplementation for llibraries used for instrumented tests. Encountered build
+    errors not doing so.*/
+    testImplementation 'org.hamcrest:hamcrest-junit:2.0.0.0'
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.19.0'
+    testImplementation 'org.robolectric:robolectric:4.0-alpha-2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'org.hamcrest:hamcrest-junit:2.0.0.0'
-    implementation 'org.mockito:mockito-core:2.19.0'
-    implementation 'org.robolectric:robolectric:4.0-alpha-2'
 }
