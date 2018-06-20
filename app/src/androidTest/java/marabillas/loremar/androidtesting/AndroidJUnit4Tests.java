@@ -19,6 +19,10 @@ public class AndroidJUnit4Tests {
     @Test
     public void trueTest() {
         assertThat(activityTestRule.getActivity().assert_true, is(true));
+    }
+
+    @Test
+    public void testContext() {
         assertThat(activityTestRule.getActivity().getApplicationContext().getPackageName(), is
                 ("marabillas.loremar.androidtesting"));
     }
