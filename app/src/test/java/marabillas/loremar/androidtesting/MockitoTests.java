@@ -89,19 +89,6 @@ public class MockitoTests {
         assertThat(spySCC.methodB(), is(10));
     }
 
-    @InjectMocks
-    private SomeComplexClass.InnerClass innerClass; //avoid injecting two Mocks of the same type
-    @Captor
-    private ArgumentCaptor<String> captor;
-
-    @Test
-    public void testSameMethodWithDifferentArguments() {
-        when(someComplexClass.methodC(gt(5))).thenReturn("yes");
-        when(someComplexClass.methodC(leq(5))).thenReturn("no");
-        assertThat(someComplexClass.methodC(6), is("yes"));
-        assertThat(someComplexClass.methodC(2), is("no"));
-    }
-
     @Test
     public void testVerify() {
         someComplexClass.methodA();
@@ -115,12 +102,25 @@ public class MockitoTests {
         verify(someComplexClass).methodB();
     }
 
+    @InjectMocks
+    private SomeComplexClass.InnerClass innerClass; //avoid injecting two Mocks of the same type
+    @Captor
+    private ArgumentCaptor<String> captor;
+
     @Test
     public void testInjectMocks() {
         when(a.toString()).thenReturn("hello");
         when(a.getPackageName()).thenReturn("alright");
         assertThat(innerClass.getAString(), is("hello"));
         assertThat(innerClass.getVString(), is("alright"));
+    }
+
+    @Test
+    public void testSameMethodWithDifferentArguments() {
+        when(someComplexClass.methodC(gt(5))).thenReturn("yes");
+        when(someComplexClass.methodC(leq(5))).thenReturn("no");
+        assertThat(someComplexClass.methodC(6), is("yes"));
+        assertThat(someComplexClass.methodC(2), is("no"));
     }
 
     @Test
