@@ -4,17 +4,24 @@ import android.app.Activity;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.AdditionalAnswers.returnsArgAt;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.AdditionalAnswers.returnsLastArg;
 import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.AdditionalMatchers.gt;
 import static org.mockito.AdditionalMatchers.leq;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -42,6 +49,9 @@ public class MockitoTests {
 
  /*   @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();*/
+
+/*    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS);*/
 
     @Test
     public void testWhenThenReturn() {
@@ -73,11 +83,6 @@ public class MockitoTests {
         assertThat(someComplexClass.methodC(20), is("yes"));
     }
 
-    /*@Mock
-    private Activity v;*/
-    @Mock
-    private Activity a;
-
     @Test
     public void testSpy() {
         SomeComplexClass someComplexClass = new SomeComplexClass();
@@ -102,10 +107,21 @@ public class MockitoTests {
         verify(someComplexClass).methodB();
     }
 
+    @Test
+    public void testSameMethodWithDifferentArguments() {
+        when(someComplexClass.methodC(gt(5))).thenReturn("yes");
+        when(someComplexClass.methodC(leq(5))).thenReturn("no");
+        assertThat(someComplexClass.methodC(6), is("yes"));
+        assertThat(someComplexClass.methodC(2), is("no"));
+    }
+
+    /*@Mock
+    private Activity v;*/
+    @Mock
+    private Activity a;
+
     @InjectMocks
     private SomeComplexClass.InnerClass innerClass; //avoid injecting two Mocks of the same type
-    @Captor
-    private ArgumentCaptor<String> captor;
 
     @Test
     public void testInjectMocks() {
@@ -115,18 +131,35 @@ public class MockitoTests {
         assertThat(innerClass.getVString(), is("alright"));
     }
 
-    @Test
-    public void testSameMethodWithDifferentArguments() {
-        when(someComplexClass.methodC(gt(5))).thenReturn("yes");
-        when(someComplexClass.methodC(leq(5))).thenReturn("no");
-        assertThat(someComplexClass.methodC(6), is("yes"));
-        assertThat(someComplexClass.methodC(2), is("no"));
-    }
+    @Captor
+    private ArgumentCaptor<String> captor;
 
     @Test
     public void testCaptor() {
         someComplexClass.haveAString("hello");
         verify(someComplexClass).haveAString(captor.capture());
         assertThat(captor.getValue(), is("hello"));
+    }
+
+    @Test
+    public void testComplexAnswers() {
+        when(someComplexClass.methodA()).then(Answers.CALLS_REAL_METHODS);
+        assertThat(someComplexClass.methodA(), is("hi"));
+
+        when(someComplexClass.methodA()).then(new Answer<String>() {
+            @Override
+            public String answer(InvocationOnMock invocation) {
+                //do something complex
+                return "nice one";
+            }
+        });
+        assertThat(someComplexClass.methodA(), is("nice one"));
+
+        when(someComplexClass.takeSomeStrings(anyString(), anyString(), anyString())).then(returnsLastArg())
+                .then(returnsFirstArg()).then(returnsArgAt(1));
+        String returns = someComplexClass.takeSomeStrings("red", "blue", "yellow") + " " +
+                someComplexClass.takeSomeStrings("black", "white", "pink") + " " +
+                someComplexClass.takeSomeStrings("olive", "magenta", "purple");
+        assertThat(returns, is("yellow black magenta"));
     }
 }

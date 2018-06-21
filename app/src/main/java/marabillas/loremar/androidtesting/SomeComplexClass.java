@@ -27,6 +27,10 @@ public class SomeComplexClass {
     void haveAString(String s) {
     }
 
+    String takeSomeStrings(String a, String b, String c) {
+        return null;
+    }
+
     static class InnerClass {
         Activity a;
         Activity v;
