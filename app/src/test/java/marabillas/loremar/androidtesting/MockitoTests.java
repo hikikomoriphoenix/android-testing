@@ -1,7 +1,12 @@
 package marabillas.loremar.androidtesting;
 
+import android.app.Activity;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -10,7 +15,10 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.AdditionalMatchers.gt;
 import static org.mockito.AdditionalMatchers.leq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 /*Notes:
@@ -21,6 +29,9 @@ import static org.mockito.Mockito.when;
  *
  * 2. When you want to pass a real object to the method but also want to make use of the ability
  * to predefine some of the methods results, use spy().
+ *
+ * 3. UnnecessaryStubbingException is when when() is called, in other words "stubbing" is done,
+ * but the method being stubbed along with its specified arguments is never called during the test.
  * */
 
 @RunWith(MockitoJUnitRunner.class)
@@ -62,12 +73,10 @@ public class MockitoTests {
         assertThat(someComplexClass.methodC(20), is("yes"));
     }
 
-    /*@Test
-    public void testTwoSameMethodWithDifferentArguments() {
-        when(someComplexClass.methodC(gt(5))).thenReturn("yes");
-        when(someComplexClass.methodC(leq(5))).thenReturn("no");
-        assertThat(someComplexClass.methodC(6), is("yes"));
-    } Shuld not "when.thenReturn" same method*/
+    /*@Mock
+    private Activity v;*/
+    @Mock
+    private Activity a;
 
     @Test
     public void testSpy() {
@@ -78,5 +87,46 @@ public class MockitoTests {
 
         when(spySCC.methodB()).thenReturn(10);
         assertThat(spySCC.methodB(), is(10));
+    }
+
+    @InjectMocks
+    private SomeComplexClass.InnerClass innerClass; //avoid injecting two Mocks of the same type
+    @Captor
+    private ArgumentCaptor<String> captor;
+
+    @Test
+    public void testSameMethodWithDifferentArguments() {
+        when(someComplexClass.methodC(gt(5))).thenReturn("yes");
+        when(someComplexClass.methodC(leq(5))).thenReturn("no");
+        assertThat(someComplexClass.methodC(6), is("yes"));
+        assertThat(someComplexClass.methodC(2), is("no"));
+    }
+
+    @Test
+    public void testVerify() {
+        someComplexClass.methodA();
+        verify(someComplexClass).methodA();
+        verify(someComplexClass, never()).methodB();
+        verifyNoMoreInteractions(someComplexClass);//checks if all method calls have been
+        // verified or if no method called at all
+
+        MainActivity activity = new MainActivity();
+        activity.processInvolvingSomeComplexClass(someComplexClass);
+        verify(someComplexClass).methodB();
+    }
+
+    @Test
+    public void testInjectMocks() {
+        when(a.toString()).thenReturn("hello");
+        when(a.getPackageName()).thenReturn("alright");
+        assertThat(innerClass.getAString(), is("hello"));
+        assertThat(innerClass.getVString(), is("alright"));
+    }
+
+    @Test
+    public void testCaptor() {
+        someComplexClass.haveAString("hello");
+        verify(someComplexClass).haveAString(captor.capture());
+        assertThat(captor.getValue(), is("hello"));
     }
 }

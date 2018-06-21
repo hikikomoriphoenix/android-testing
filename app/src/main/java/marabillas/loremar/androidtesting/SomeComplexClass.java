@@ -1,7 +1,9 @@
 package marabillas.loremar.androidtesting;
 
+import android.app.Activity;
+
 public class SomeComplexClass {
-    int x;
+    private int x;
 
     SomeComplexClass() {
         x = 100;
@@ -20,5 +22,26 @@ public class SomeComplexClass {
 
     int getX() {
         return x;
+    }
+
+    void haveAString(String s) {
+    }
+
+    static class InnerClass {
+        Activity a;
+        Activity v;
+
+        InnerClass(Activity a, Activity v) {
+            this.a = a;
+            this.v = v;
+        }
+
+        String getAString() {
+            return a.toString();
+        }
+
+        String getVString() {
+            return v.getPackageName();
+        }
     }
 }
