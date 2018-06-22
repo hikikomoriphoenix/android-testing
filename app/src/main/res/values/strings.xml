@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">android testing</string>
+    <string name="a_fragment_text1">Hello World 2018</string>
+    <string name="a_list_item_text">An item</string>
 </resources>
