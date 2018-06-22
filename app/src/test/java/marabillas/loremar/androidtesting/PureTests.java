@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
-public class PlainUnitTests {
+public class PureTests {
     @Test
     public void trueTest() {
         assertThat(true, is(true));

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -104,8 +103,6 @@ public class RobolectricTests {
     public void testRecyclerviewFromFragment() {
         AFragment fragment = Robolectric.buildFragment(AFragment.class).create().start().visible
                 ().get();
-        fragment.onCreateView(LayoutInflater.from(activity), (ViewGroup) activity.findViewById(android.R.id.content),
-                null);
         RecyclerView recyclerView = fragment.getView().findViewById(R.id.a_recycler_view);
 
         //finally got it to work with this fix for RecyclerView issue with Robolectric
