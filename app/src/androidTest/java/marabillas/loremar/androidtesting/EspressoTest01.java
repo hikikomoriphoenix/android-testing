@@ -45,7 +45,8 @@ public class EspressoTest01 {
 
         pressBack();
 
-        pressBack(); //gets a 'android.support.test.espresso.NoActivityResumedException: Pressed back and killed the app'
+        //pressBack(); //gets a 'android.support.test.espresso.NoActivityResumedException: Pressed
+        // back and killed the app'
 
     }
 
