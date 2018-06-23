@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +16,7 @@ public class MainActivity extends Activity {
     String aValue;
     int bValue;
 
-    MainActivity() {
+    public MainActivity() {
         assert_true = true;
     }
 
@@ -30,6 +32,15 @@ public class MainActivity extends Activity {
         Collections.addAll(list, items);
         recyclerView.setAdapter(new ARecyclerViewAdapter(this, list));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        TextView textView = findViewById(R.id.activity_text);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().replace(android.R.id.content, new
+                        AFragment(), null).addToBackStack(null).commit();
+            }
+        });
     }
 
     void processInvolvingSomeComplexClass(SomeComplexClass someComplexClass) {
