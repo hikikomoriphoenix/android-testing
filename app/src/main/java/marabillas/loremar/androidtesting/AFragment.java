@@ -1,12 +1,14 @@
 package marabillas.loremar.androidtesting;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -28,6 +30,14 @@ public class AFragment extends Fragment {
         Collections.addAll(list, items);
         recyclerView.setAdapter(new ARecyclerViewAdapter(getActivity(), list));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        TextView textView = view.findViewById(R.id.a_fragment_text1);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity().getApplicationContext(), InteractiveViewsActivity.class));
+            }
+        });
 
         return view;
     }

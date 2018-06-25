@@ -12,14 +12,14 @@ import org.hamcrest.TypeSafeMatcher;
 import static marabillas.loremar.androidtesting.Utils.getBitmap;
 
 public class ImageViewMatchers {
-    public static Matcher<View> withSrc(int drawableId) {
-        return new SourceMatcher(drawableId);
+    public static Matcher<View> withDrawable(int drawableId) {
+        return new DrawableMatcher(drawableId);
     }
 
-    public static class SourceMatcher extends TypeSafeMatcher<View> {
+    public static class DrawableMatcher extends TypeSafeMatcher<View> {
         private int expectedId;
 
-        public SourceMatcher(int expectedId) {
+        public DrawableMatcher(int expectedId) {
             super(View.class);
             this.expectedId = expectedId;
         }
@@ -39,7 +39,7 @@ public class ImageViewMatchers {
 
         @Override
         public void describeTo(Description description) {
-            description.appendText("with src: ");
+            description.appendText("with drawable from resource id: ");
             description.appendValue(expectedId);
         }
     }
