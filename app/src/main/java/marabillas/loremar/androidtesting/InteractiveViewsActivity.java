@@ -27,6 +27,7 @@ public class InteractiveViewsActivity extends Activity {
         Button button1 = findViewById(R.id.i_button1);
         Button button2 = findViewById(R.id.i_button2);
         Button button3 = findViewById(R.id.i_button3);
+        final TextView textBox = InteractiveViewsActivity.this.findViewById(R.id.i_textBox);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,8 +53,6 @@ public class InteractiveViewsActivity extends Activity {
                     new EditBoxDialog(InteractiveViewsActivity.this) {
                         @Override
                         void ok(String text) {
-                            TextView textBox = InteractiveViewsActivity.this.findViewById(R.id
-                                    .i_textBox);
                             textBox.setText(text);
                         }
                     };
@@ -80,8 +79,11 @@ public class InteractiveViewsActivity extends Activity {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+                        String text;
                         switch (item.getTitle().toString()) {
                             case "alpha":
+                                text = "clicked alpha";
+                                textBox.setText(text);
                                 break;
                             case "bravo":
                                 break;

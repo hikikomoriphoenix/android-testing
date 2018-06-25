@@ -87,5 +87,7 @@ public class EspressoInteractiveTests {
         button3Interaction.perform(longClick());
         ViewInteraction popupMenuInteraction = onView(withText("alpha")).inRoot(RootMatchers.isPlatformPopup());
         popupMenuInteraction.check(matches(isCompletelyDisplayed()));
+        popupMenuInteraction.perform(click());
+        textBoxInteraction.check(matches(withText("clicked alpha")));
     }
 }
