@@ -69,7 +69,6 @@ public class AndroidJUnit4Tests {
     @Test
     public void testEditBoxDialog() {
         final Activity activity = activityTestRule.getActivity();
-        final Object syncToken = new Object();
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

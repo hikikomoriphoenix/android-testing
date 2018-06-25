@@ -2,4 +2,7 @@
     <string name="app_name">android testing</string>
     <string name="a_fragment_text1">Hello World 2018</string>
     <string name="a_list_item_text">An item</string>
+    <string name="i_click_me">Click Me</string>
+    <string name="i_double_click_me">Double Click Me</string>
+    <string name="i_long_click_me">Long Click Me</string>
 </resources>
